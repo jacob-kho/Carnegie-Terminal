@@ -1,5 +1,21 @@
 from cmu_graphics import *
 
+"""
+'Project Name'
+Name: Jacob Lucas Kho
+AndrewID: jkho
+Section: K
+
+This project is an interactive stock screening and 
+portfolio backtesting tool - made to visualize stock 
+trends in the recent year based off a portfolio a user 
+can select.
+
+Feel free to click the help button in the bottom right
+corner of the screen to better understand how to use
+the app on its respective screens. Enjoy!!
+"""
+
 class Stock:
     def __init__(self, name, sector, pe, revenueGrowth, prices):
         self.name = name
@@ -143,8 +159,10 @@ def loadStockData():
     
 def onAppStart(app):
     
-    # Design Tokens (All from AI)
+    # Background
     app.url = 'cmu://1166281/46516607/abstract-polygonal-shape-black-background-free-vector.jpg'
+    
+    # Design Tokens
     app.BG = rgb(13, 17, 23)
     app.PANEL = rgb(22, 27, 34)
     app.BORDER = rgb(48, 54, 61)
@@ -195,7 +213,7 @@ def onAppStart(app):
     app.buttonWidth = 45
     app.buttonHeight = 14
     
-    # PB Hover
+    # Portfolio Builder Hover
     app.menuHoverP = False
     app.screenerHoverP = False
     
@@ -231,7 +249,11 @@ def onAppStart(app):
     app.helpR = 7.5
         
 def redrawAll(app):
+
+    # Background
     drawImage(app.url, 0, 0, width=app.width, height=app.height, opacity=100, rotateAngle=0, align='left-top', visible=True)
+    
+    # Screen
     if app.currentScreen == 'welcome':
         drawWelcome(app)
     elif app.currentScreen == 'screener':
@@ -241,6 +263,7 @@ def redrawAll(app):
     elif app.currentScreen == 'backtest':
         drawBacktest(app)
     if app.showHelpScreener:
+
         # Background
         drawRect(0, 0, app.width, app.height, fill=app.BG, opacity=90)
         
@@ -253,19 +276,26 @@ def redrawAll(app):
         drawLabel('Click anywhere to close', app.width//2, 130, size=6, fill=app.TEXT_SEC)
         
     elif app.showHelpPortfolioBuilder:
+
+        # Background
         drawRect(0, 0, app.width, app.height, fill=app.BG, opacity=90)
+        
+        # Manual
         drawLabel('                 Terminal Portfolio Builder Manual', app.width//2, 30, size=12, bold=True, fill=app.TEXT_PRI)
         drawLabel('Carnegie', app.width//2 - 96, 30, size=12, bold=True, fill=app.CRIMSON)
         drawLabel('Click + to add stock and adjust weights with -/+', app.width//2, 60, size=7, fill=app.TEXT_SEC)
         drawLabel('Once at 100% weight, click backtest to view animated equity curve and performance metrics', 
                   app.width//2, 80, size=7, fill=app.TEXT_SEC)
-        drawLabel('Press optimize to find the best weight allocation to maximize Sharpe ratio', app.width//2, 100, size=7, fill=app.TEXT_SEC)
-        drawLabel('Try to limit only up to five stocks when using the optimization tool', app.width//2, 120, size=7, fill=app.TEXT_SEC)
-        drawLabel('Press screener to return to screener', app.width//2, 140, size=7, fill=app.TEXT_SEC)
-        drawLabel('Click anywhere to close', app.width//2, 170, size=6, fill=app.TEXT_SEC)
+        drawLabel('Press optimize to find the best weight allocation to maximize Sharpe ratio for up to 5 stocks', app.width//2, 100, size=7, fill=app.TEXT_SEC)
+        drawLabel('Press screener to return to screener', app.width//2, 120, size=7, fill=app.TEXT_SEC)
+        drawLabel('Click anywhere to close', app.width//2, 150, size=6, fill=app.TEXT_SEC)
 
     elif app.showHelpBacktest:
+        
+        # Background
         drawRect(0, 0, app.width, app.height, fill=app.BG, opacity=90)
+        
+        # Manual
         drawLabel('                 Terminal Backtest Manual', app.width//2, 30, size=12, bold=True, fill=app.TEXT_PRI)
         drawLabel('Carnegie', app.width//2 - 75, 30, size=12, bold=True, fill=app.CRIMSON)
         drawLabel('Drag the metrics box to reposition it', app.width//2, 60, size=7, fill=app.TEXT_SEC)
@@ -274,21 +304,29 @@ def redrawAll(app):
         drawLabel('Click anywhere to close', app.width//2, 130, size=6, fill=app.TEXT_SEC)
         
 def drawWelcome(app):
+    
+    # Panel
     drawRect(app.width//2 - 172.5, app.height//2 - 82.5, 350, 150, fill=app.PANEL, border=app.CRIMSON, borderWidth=1)
     drawLabel('Welcome to                 Terminal', app.width//2, app.titleY + 130, size = 20, bold = True, fill=app.TEXT_PRI)
     drawLabel('Carnegie', app.width//2+16, app.titleY + 130, size = 20, bold = True, fill=app.CRIMSON)
     drawLabel('Press a button to start!', app.width//2, app.titleY + 155, size = 10, bold = True, fill=app.TEXT_SEC)
     
+    # Hovering over Screener
     screenerColor = app.HOVER_BIN if app.screenerHoverW else app.PANEL
     drawRect(app.width//2 - 120, app.titleY + 195, 110, 40, fill=screenerColor, border=app.CRIMSON, borderWidth=1)
     drawLabel('Screener', app.width//2 - 65, app.titleY + 215, size = 10, bold = True, fill=app.TEXT_PRI)
     
+    # Hovering over Portfolio Builder
     portfolioColor = app.HOVER_BIN if app.portfolioHoverW else app.PANEL
     drawRect(app.width//2 + 10, app.titleY + 195, 110, 40, fill=portfolioColor, border=app.BORDER, borderWidth=1)
     drawLabel('Portfolio Builder', app.width//2 + 65, app.titleY + 215, size = 10, bold = True, fill=app.TEXT_SEC)
 
 def drawScreener(app):
+    
+    # Title
     drawLabel('Screener', app.width//2, app.titleY, size = 10, bold = True, fill=app.TEXT_PRI)
+    
+    # Sector Buttons
     headers = ['Ticker', 'Name', 'Sector', 'P/E', 'Growth', 'Price', 'Return']
     deltaX = app.width / (len(headers) + 1)
     deltaY = app.height / (len(app.stocks) + 3)
@@ -300,7 +338,11 @@ def drawScreener(app):
                  app.buttonWidth, app.buttonHeight, fill = color, border=borderCol, borderWidth=1)
         textCol = app.TEXT_HEAD if app.sectors[sector] == app.filterSector else app.TEXT_SEC
         drawLabel(app.sectors[sector], x, app.filterY, size = 5, fill=textCol)
+        
+    # Headers Box
     drawRect(deltaX * 0.5, deltaY * 1.5, app.width - deltaX, deltaY, fill=app.PANEL, border=app.BORDER, borderWidth=1)
+    
+    # Reverse-Sorting Algorithm
     if app.sortBy:
         pairs = []
         for ticker in app.stocks:
@@ -309,12 +351,16 @@ def drawScreener(app):
         tickers = [pair[1] for pair in pairs]
     else:
         tickers = list(app.stocks)
+        
+    # Sector-Filtering Algorithm
     if app.filterSector != 'All':
         filtered = []
         for ticker in tickers:
             if app.stocks[ticker].sector == app.filterSector:
                 filtered.append(ticker)
         tickers = filtered
+        
+    # Drawing Table
     for col in range(len(headers)):
         drawLabel(headers[col], deltaX * (col + 1), deltaY * 2, size = 6, bold=True, fill=app.TEXT_SEC)
     for index, ticker in enumerate(tickers):
@@ -332,30 +378,37 @@ def drawScreener(app):
         drawLabel(f"{stock.prices[-1]:.2f}", deltaX * 6, row, size = 6, fill=app.TEXT_PRI)
         drawLabel(f"{ret:.1%}", deltaX * 7, row, size = 6, fill=retColor, bold=True)
 
+    # Hovering Portfolio
     portfolioColor = app.HOVER_BIN if app.portfolioHoverS else app.PANEL
     drawRect(app.width - 60, 5, 50, 20, fill=portfolioColor, border=app.BORDER, borderWidth=1)
     drawLabel('Portfolio', app.width - 35, 15, size=5, fill=app.TEXT_SEC)
     
+    # Hovering Menu
     menuColor = app.HOVER_BIN if app.menuHoverS else app.PANEL
     drawRect(10, 5, 50, 20, fill=menuColor, border=app.BORDER, borderWidth=1)
     drawLabel('Main Menu', 35, 15, size=5, fill=app.TEXT_SEC)
     
-    # Help
+    # Hovering Help
     helpColor = app.HOVER_BIN if app.onHelp else app.PANEL
     drawCircle(app.helpCX, app.helpCY, app.helpR, fill=helpColor, border=app.BORDER, borderWidth=1)
     drawLabel('?', app.helpCX, app.helpCY, size = 8, bold=True, fill=app.TEXT_SEC)
 
 def drawPortfolio(app):
+    
+    # Title
     drawLabel('Portfolio Builder', app.width//2, app.titleY + 20, size=10, bold=True, fill=app.TEXT_PRI)
     
+    # Hovering Menu
     menuColor = app.HOVER_BIN if app.menuHoverP else app.PANEL
     drawRect(10, 5, 50, 20, fill=menuColor, border=app.BORDER, borderWidth=1)
     drawLabel('Main Menu', 35, 15, size=5, fill=app.TEXT_SEC)
     
+    # Hovering Screener
     screenerColor = app.HOVER_BIN if app.screenerHoverP else app.PANEL
     drawRect(app.width - 60, 5, 50, 20, fill=screenerColor, border=app.BORDER, borderWidth=1)
     drawLabel('Screener', app.width - 35, 15, size=5, fill=app.TEXT_SEC)
     
+    # Initializing Distances & Headers
     headers = ['Ticker', 'Name', 'Price', 'Select', 'Weight', 'Adjust']
     deltaX = app.width / (len(headers) + 1)
     deltaY = (app.height - app.tableTopPort) / (len(app.stocks) + 3)
@@ -365,6 +418,7 @@ def drawPortfolio(app):
     for col in range(len(headers)):
         drawLabel(headers[col], deltaX * (col + 1), app.tableTopPort + deltaY/2, size=6, bold=True, fill=app.TEXT_SEC)
     
+    # Building Table
     for index, ticker in enumerate(app.stocks):
         stock = app.stocks[ticker]
         row = app.tableTopPort + deltaY * (index + 2) - 15
@@ -376,6 +430,7 @@ def drawPortfolio(app):
         drawLabel(stock.name, deltaX * 2, row, size=6, fill=app.TEXT_PRI)
         drawLabel(f"${stock.prices[-1]:.2f}", deltaX * 3, row, size=6, fill=app.TEXT_PRI)
         
+        # Drawing Buttons
         if ticker in app.selectedStocks:
             btnColor = app.RED_DIM
             btnBorder = app.CRIMSON
@@ -389,6 +444,7 @@ def drawPortfolio(app):
         drawRect(deltaX * 4 - 8, row - 8, 16, 16, fill=btnColor, border=btnBorder, borderWidth=1)
         drawLabel(btnLabel, deltaX * 4, row, size = 8, fill=btnTextCol, bold=True)
         
+        # Weight Indicators
         if ticker in app.selectedStocks:
             weight = app.weights.get(ticker, 0)
             drawLabel(f"{weight}%", deltaX * 5, row, size=6, fill=app.GOLD, bold=True)
@@ -401,16 +457,18 @@ def drawPortfolio(app):
     totalColor = app.GREEN_ACC if total == 100 else app.CRIMSON
     bottomY = app.tableTopPort + deltaY * (len(app.stocks) + 2.5)
     
+    # Total Calculations & Backtest + Optimize Box
     drawRect(deltaX * 4 + 25, bottomY - 35, 114, 42, fill=app.PANEL, border=app.BORDER, borderWidth=1)
     drawLabel(f"Total: {total}%", deltaX * 5, bottomY - 15, size = 8, fill=totalColor, bold=True)
-
+    
+    # Backtest + Optimize Button-unlocking Algorithm
     if total == 100:
         drawRect(deltaX * 6 - 25, bottomY - 35, 50, 20, fill=app.CRIMSON, border=app.CRIMSON, borderWidth=1)
         drawLabel('Backtest', deltaX * 6, bottomY - 25, size=6, fill=app.TEXT_HEAD, bold=True)
     else:
         drawRect(deltaX * 6 - 25, bottomY - 35, 50, 20, fill=app.RED_DIM, border=app.CRIMSON, borderWidth=1)
         drawLabel('Backtest', deltaX * 6, bottomY - 25, size=6, fill=app.TEXT_HEAD, bold=True)
-    if len(app.selectedStocks) > 0:
+    if 6 > len(app.selectedStocks) > 0:
         drawRect(deltaX * 6 - 25, bottomY - 13, 50, 20, fill=app.GREEN_ACC, borderWidth=1)
         drawLabel('Optimize', deltaX * 6, bottomY - 3, size=6, fill=app.GREEN_DIM, bold=True)
     else:
@@ -423,18 +481,23 @@ def drawPortfolio(app):
     drawLabel('?', app.helpCX, app.helpCY, size = 8, bold=True, fill=app.TEXT_SEC)
 
 def drawBacktest(app):
+    
+    # Title
     drawRect(10, 50, app.width - 20, app.height - 60, fill=app.BG, border=app.BORDER, borderWidth=1)
     drawLabel('Backtest Results', app.width//2, app.titleY + 10, size=10, bold=True, fill=app.TEXT_PRI)
     
+    # Menu Hover
     menuColor = app.HOVER_BIN if app.menuHoverB else app.PANEL
     drawRect(10, 5, 50, 20, fill=menuColor, border=app.BORDER, borderWidth=1)
     drawLabel('Main Menu', 35, 15, size=5, fill=app.TEXT_SEC)
     
+    # Portfolio Hover
     portfolioColor = app.HOVER_BIN if app.portfolioHoverB else app.PANEL
     drawRect(app.width - 60, 5, 50, 20, fill=portfolioColor, border=app.BORDER, borderWidth=1)
     drawLabel('Portfolio', app.width - 35, 15, size=5, fill=app.TEXT_SEC)
 
-    if len(app.backtestResults) < 2:
+    # Draw Chart
+    if len(app.backtestResults) < 2:            # Exits function if there are less than two data points
         return
     chartLeft = 48
     chartRight = app.width - 32
@@ -453,6 +516,7 @@ def drawBacktest(app):
         y2 = chartBottom - (app.backtestResults[i] - minVal) / (maxVal - minVal) * (chartBottom - chartTop)
         drawLine(x1, y1, x2, y2, fill=lineColor, lineWidth=1.5)
     
+    # Y-axis Scale Guidelines
     numLabels = 5
     for i in range(numLabels + 1):
         val = minVal + (maxVal - minVal) * i / numLabels
@@ -460,7 +524,7 @@ def drawBacktest(app):
         drawLabel(f"{val:.0f}", chartLeft - 15, y, size=5, fill=app.TEXT_SEC)
         drawLine(chartLeft, y, chartRight, y, fill=app.BORDER, opacity=30)
         
-    # Hover Feature (used a little of AI to guide algorithm)
+    # Hover Feature
     if app.hoverWeek != None:
         hx = chartLeft + app.hoverWeek * (chartRight - chartLeft) / (len(app.backtestResults) - 1)
         drawLine(hx, chartTop, hx, chartBottom, fill=app.GOLD, opacity=50, dashes=True)
@@ -492,6 +556,8 @@ def onStep(app):
             app.backtestRunning = False
     
 def runBacktest(app):
+    
+    # Backtest Algorithm
     results = [100]
     numWeeks = len(list(app.stocks.values())[0].prices)
     for week in range(1, numWeeks):
@@ -507,7 +573,6 @@ def runBacktest(app):
     app.backtestRunning = True
     
     # Metrics Calculations
-    
     weeklyReturns = []
     for i in range(1, len(results)):
         weeklyReturns.append((results[i] - results[i-1]) / results[i-1])
@@ -515,7 +580,7 @@ def runBacktest(app):
     app.totalReturn = (results[-1] - 100) / 100
     app.volatility = getVolatility(weeklyReturns)
     
-    riskFreeWeekly = 0.05 / 52
+    riskFreeWeekly = 0.05 / 52              # Estimated Risk Free Weekly
     avgReturn = sum(weeklyReturns) / len(weeklyReturns)
     excessReturn = avgReturn - riskFreeWeekly
     app.sharpeRatio = (excessReturn / app.volatility) * (52 ** 0.5)
@@ -531,6 +596,8 @@ def runBacktest(app):
     app.maxDrawdown = maxDD
     
 def optimizeWeights(app):
+    
+    # Backtracking Initialize
     bestResult = [-1000, {}]
     currentWeights = {}
     optimizeHelper(app, 0, 100, currentWeights, bestResult)
@@ -538,6 +605,8 @@ def optimizeWeights(app):
     runBacktest(app)
     
 def optimizeHelper(app, stockIndex, remainingWeight, currentWeights, bestResult):
+    
+    # Backtracking Algorithm
     if stockIndex == len(app.selectedStocks):
         if remainingWeight == 0:
             app.weights = currentWeights
@@ -641,7 +710,7 @@ def onMousePress(app, mouseX, mouseY):
             if (deltaX * 6 - 25 <= mouseX <= deltaX * 6 + 25 and bottomY - 35 <= mouseY <= bottomY - 15):
                 app.currentScreen='backtest'
                 runBacktest(app)
-        if len(app.selectedStocks) > 0:
+        if 6 > len(app.selectedStocks) > 0:
             if (deltaX * 6 - 25 <= mouseX <= deltaX * 6 + 25 and bottomY - 13 <= mouseY <= bottomY + 7):
                 optimizeWeights(app)
                 
@@ -675,12 +744,16 @@ def onMouseDrag(app, mouseX, mouseY):
         app.metricsY = mouseY - mh/2
         
 def onMouseMove(app, mouseX, mouseY):
+    
+    # Help Button Conditions
     if distance(mouseX, mouseY, app.helpCX, app.helpCY) <= app.helpR:
         app.onHelp = True
     else:
         app.onHelp = False
     
     if app.currentScreen == 'backtest' and len(app.backtestResults) > 1:
+        
+        # Hovering Over Chart
         chartLeft = 48
         chartRight = app.width - 32
         if chartLeft <= mouseX <= chartRight:
@@ -691,38 +764,55 @@ def onMouseMove(app, mouseX, mouseY):
             app.hoverValue = app.backtestResults[weekIndex]
         else:
             app.hoverWeek = None
+
     if app.currentScreen == 'welcome':
+        
+        # Screener Hover
         if app.width//2 - 120 <= mouseX <= app.width//2 - 10 and app.titleY + 195 <= mouseY <= app.titleY + 235:
             app.screenerHoverW = True
         else:
             app.screenerHoverW = False
+            
+        # Portfolio Hover
         if app.width//2 + 10 <= mouseX <= app.width//2 + 120 and app.titleY + 195 <= mouseY <= app.titleY + 235:
             app.portfolioHoverW = True
         else:
             app.portfolioHoverW = False
     elif app.currentScreen == 'screener':
+        
+        # Menu Hover
         if 10 <= mouseX <= 60 and 5 <= mouseY <= 25:
             app.menuHoverS = True
         else:
             app.menuHoverS = False
+            
+        # Portfolio Hover
         if app.width - 60 <= mouseX <= app.width - 10 and 5 <= mouseY <= 25:
             app.portfolioHoverS = True
         else:
             app.portfolioHoverS = False
     elif app.currentScreen == 'portfolio':
+        
+        # Menu Hover
         if 10 <= mouseX <= 60 and 5 <= mouseY <= 25:
             app.menuHoverP = True
         else:
             app.menuHoverP = False
+            
+        # Screener Hover
         if app.width - 60 <= mouseX <= app.width - 10 and 5 <= mouseY <= 25:
             app.screenerHoverP = True
         else:
             app.screenerHoverP = False
     elif app.currentScreen == 'backtest':
+        
+        # Menu Hover
         if 10 <= mouseX <= 60 and 5 <= mouseY <= 25:
             app.menuHoverB = True
         else:
             app.menuHoverB = False
+            
+        # Portfolio Hover
         if app.width - 60 <= mouseX <= app.width - 10 and 5 <= mouseY <= 25:
             app.portfolioHoverB = True
         else:
@@ -739,6 +829,8 @@ def getVolatility(data):
     return sdv
 
 def getSortKey(app, ticker):
+    
+    # Indexing for Sorting Algorithm
     stock = app.stocks[ticker]
     if app.sortBy == 'P/E':
         return stock.pe
