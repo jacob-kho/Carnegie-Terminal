@@ -105,5 +105,5 @@ Price data covers 50 weeks of weekly closing prices.
 
 ## Author
 
-Jacob — Carnegie Mellon University, Class of 2028  
+Jacob — Carnegie Mellon University, Class of 2029
 Mathematical Sciences (Operations Research & Statistics) | Machine Learning Minor
