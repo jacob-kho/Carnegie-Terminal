@@ -1,21 +1,5 @@
 from cmu_graphics import *
 
-"""
-'Project Name'
-Name: Jacob Lucas Kho
-AndrewID: jkho
-Section: K
-
-This project is an interactive stock screening and 
-portfolio backtesting tool - made to visualize stock 
-trends in the recent year based off a portfolio a user 
-can select.
-
-Feel free to click the help button in the bottom right
-corner of the screen to better understand how to use
-the app on its respective screens. Enjoy!!
-"""
-
 class Stock:
     def __init__(self, name, sector, pe, revenueGrowth, prices):
         self.name = name
