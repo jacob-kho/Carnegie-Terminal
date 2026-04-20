@@ -1,4 +1,4 @@
-# Carnegie Terminal — Carnegie Terminal
+# Carnegie Terminal
 
 A Bloomberg-inspired stock screening and portfolio backtesting tool built with Python and `cmu_graphics`. Screen equities, construct custom portfolios, and run animated backtests with real performance analytics.
 
